@@ -6,18 +6,20 @@ import { User } from '../../types/User';
 
 type Props = {
   selectedTodo: Todo | null;
-  setSelectedTodo: (todo: Todo | null) => void;
+  onClose: (todo: Todo | null) => void;
 };
 
-export const TodoModal: React.FC<Props> = ({
-  setSelectedTodo,
-  selectedTodo,
-}) => {
+export const TodoModal: React.FC<Props> = ({ onClose, selectedTodo }) => {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (!selectedTodo) {
+      return;
+    }
+
     setIsLoading(true);
+
     getUser(selectedTodo?.userId)
       .then(setUser)
       .finally(() => setIsLoading(false));
@@ -48,7 +50,7 @@ export const TodoModal: React.FC<Props> = ({
               type="button"
               className="delete"
               data-cy="modal-close"
-              onClick={() => setSelectedTodo(null)}
+              onClick={() => onClose(null)}
             />
           </header>
 

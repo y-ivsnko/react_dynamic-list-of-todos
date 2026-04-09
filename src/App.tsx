@@ -49,7 +49,7 @@ export const App: React.FC = () => {
   const [query, setQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState(Status.All);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedTodo, setSelectedTodo] = useState(null);
+  const [selectedTodo, setSelectedTodo] = useState<Todo | null>(null);
 
   useEffect(() => {
     setIsLoading(true);
@@ -60,7 +60,7 @@ export const App: React.FC = () => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const preperedTodos = getFilteredTodos(todos, { query, filterStatus });
+  const preparedTodos = getFilteredTodos(todos, { query, filterStatus });
 
   return (
     <>
@@ -83,7 +83,7 @@ export const App: React.FC = () => {
                 <Loader />
               ) : (
                 <TodoList
-                  todos={preperedTodos}
+                  todos={preparedTodos}
                   onSelect={setSelectedTodo}
                   selectedTodo={selectedTodo}
                 />
@@ -94,7 +94,7 @@ export const App: React.FC = () => {
       </div>
 
       <TodoModal
-        setSelectedTodo={() => setSelectedTodo(null)}
+        onClose={() => setSelectedTodo(null)}
         selectedTodo={selectedTodo}
       />
     </>
